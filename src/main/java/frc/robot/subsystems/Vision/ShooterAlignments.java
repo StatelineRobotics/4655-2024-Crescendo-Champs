@@ -29,7 +29,7 @@ public class ShooterAlignments{
     private PIDController rotationController = new PIDController(.1,0,0);  //4 0 0
 
     public double armAngle;
-    public boolean VhasTarget;
+    public boolean VhasTarget = false;
     public Pose2d Vpose = new Pose2d(0,0, new Rotation2d(0));
 
   
@@ -129,7 +129,7 @@ public class ShooterAlignments{
         double distanceX = Vpose.getX() - speakerX;
         double distanceY = Vpose.getY() - speakerY;
         double angle = Math.toDegrees(Math.atan2(distanceX, distanceY));
-        double finalangle = Math.toRadians((angle + offset));
+        double finalangle = angle + offset % 360;
         if (finalangle > 180){
             finalangle = -(360 - finalangle);
         }

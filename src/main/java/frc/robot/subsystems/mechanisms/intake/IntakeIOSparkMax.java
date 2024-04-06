@@ -63,7 +63,7 @@ public class IntakeIOSparkMax implements IntakeIO{
 
         wristController = m_Wrist.getPIDController();
         wristController.setFeedbackDevice(wristEncoder);
-        wristController.setP(.00028);
+        wristController.setP(.00018);//NJ was .00028
         wristController.setI(0);
         wristController.setD(0);
         wristController.setIZone(0);

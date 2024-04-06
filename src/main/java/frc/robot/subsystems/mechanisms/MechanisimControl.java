@@ -319,7 +319,12 @@ public class MechanisimControl extends SubsystemBase {
         && intakeSubsystem.HasNote();
   }
 
-   @AutoLogOutput(key = "MechanisimControl/DesieredState")
+  @AutoLogOutput(key = "MechanisimControl/DesieredState")
+  public String MachanismState(){
+    String machanismState = currentState.toString();
+    return machanismState;
+  }
+
   public void setDesiredState(State desiredState) {
 //    if (currentState == State.PICKUP && intakeSubsystem.HasNote()) {
 //     desiredState = State.STORE;
