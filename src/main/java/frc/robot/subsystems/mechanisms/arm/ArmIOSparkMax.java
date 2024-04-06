@@ -80,9 +80,9 @@ public class ArmIOSparkMax implements ArmIO {
         armExtenderController.setIZone(0);
         armExtenderController.setFF(0.0025);
         armExtenderController.setOutputRange(-.7,.7);
-        armExtenderController.setSmartMotionMaxVelocity(1300, smartMotionSlot);
+        armExtenderController.setSmartMotionMaxVelocity(1500, smartMotionSlot); //NJWAS1300
         armExtenderController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-        armExtenderController.setSmartMotionMaxAccel(600, smartMotionSlot);
+        armExtenderController.setSmartMotionMaxAccel(700, smartMotionSlot);  //NJWAS 600
         armExtenderController.setSmartMotionAllowedClosedLoopError(1, smartMotionSlot);
         extendLimitSwitch = m_ArmExtender.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
         extendLimitSwitch.enableLimitSwitch(true);

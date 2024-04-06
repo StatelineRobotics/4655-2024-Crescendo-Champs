@@ -68,13 +68,13 @@ public class IntakeIOSparkMax implements IntakeIO{
         wristController.setD(0);
         wristController.setIZone(0);
         wristController.setFF(0.0002);
-        wristController.setOutputRange(-0.70,0.70);
+        wristController.setOutputRange(-1,1); //NJWAS -.70 .70
        // wristController.setPositionPIDWrappingEnabled(false);
 
         int smartMotionSlot = 0;
-        wristController.setSmartMotionMaxVelocity(1200, smartMotionSlot);
+        wristController.setSmartMotionMaxVelocity(2300, smartMotionSlot); //NJWAS1200
         wristController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-        wristController.setSmartMotionMaxAccel(700, smartMotionSlot);
+        wristController.setSmartMotionMaxAccel(1500, smartMotionSlot); //NJWAS700
         wristController.setSmartMotionAllowedClosedLoopError(1, smartMotionSlot);
 
 
@@ -99,6 +99,8 @@ public class IntakeIOSparkMax implements IntakeIO{
         inputs.wristposition = wristEncoder.getPosition();
         inputs.intakeCurrent = m_Intake.getOutputCurrent();
         inputs.wristCurrent = m_Wrist.getOutputCurrent();
+        inputs.wristOutput = m_Wrist.getAppliedOutput();
+        inputs.wristVelocity = wristEncoder.getVelocity();
         inputs.lcMeasurement =  laserCAN.getMeasurement() == null ? 0 : laserCAN.getMeasurement().distance_mm;
         
         

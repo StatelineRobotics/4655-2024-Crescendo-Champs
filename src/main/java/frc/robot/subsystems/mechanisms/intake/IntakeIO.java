@@ -15,6 +15,8 @@ public interface IntakeIO {
     public double wristCurrent = 0.0;
     public double blinkenValue = 0.53;
     public double lcMeasurement;
+    public double wristOutput;
+    public double wristVelocity;
  
   }
 
