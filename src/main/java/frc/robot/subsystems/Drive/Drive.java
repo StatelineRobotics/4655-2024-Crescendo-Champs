@@ -228,11 +228,21 @@ public class Drive extends SubsystemBase {
         ySpeedCommanded = ySpeed;
         m_currentRotation = rot;
         
+        double xSpeedDelivered;
+        double ySpeedDelivered;
+        double rotDelivered;
 
         // Convert the commanded speeds into the correct units for the drivetrain
-        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-        double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
+        if (rateLimit) {
+            xSpeedDelivered = xSpeedCommanded * DriveConstants.slowkMaxSpeedMetersPerSecond;
+            ySpeedDelivered = ySpeedCommanded * DriveConstants.slowkMaxSpeedMetersPerSecond;
+            rotDelivered = m_currentRotation * DriveConstants.slowkMaxAngularSpeed;
+
+        } else {
+            xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
+            ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
+            rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
+        }
 
         Logger.recordOutput("Swerve/FieldDelative", fieldRelative);
         Logger.recordOutput("Swerve/XspeedCommanded", xSpeedDelivered);

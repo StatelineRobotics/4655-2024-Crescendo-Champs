@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems.mechanisms.intake;
 
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
@@ -50,8 +52,8 @@ public class IntakeIOSparkMax implements IntakeIO{
         m_Intake.setIdleMode(IdleMode.kCoast);      //MOTORBRAKE
         m_Wrist.setInverted(false);
         m_Intake.setInverted(true);
-        m_Wrist.setSmartCurrentLimit(40);
-        m_Intake.setSmartCurrentLimit(30);
+        m_Wrist.setSmartCurrentLimit(50);
+        m_Intake.setSmartCurrentLimit(40);
     
         intakeController = m_Intake.getPIDController();
         intakeController.setFeedbackDevice(intakeEncoder);
@@ -64,19 +66,25 @@ public class IntakeIOSparkMax implements IntakeIO{
 
         wristController = m_Wrist.getPIDController();
         wristController.setFeedbackDevice(wristEncoder);
-        wristController.setP(.000045);//NJ was .00028
+        wristController.setP(.00007);//NJ was .00028
         wristController.setI(0);
-        wristController.setD(00002);
+        wristController.setD(00003);
         wristController.setIZone(0);
         wristController.setFF(0.0001);
-        wristController.setOutputRange(-.9,.9); //NJWAS -.70 .70
+        wristController.setOutputRange(-1,1); //NJWAS -.70 .70
        // wristController.setPositionPIDWrappingEnabled(false);
 
         int smartMotionSlot = 0;
-        wristController.setSmartMotionMaxVelocity(3000, smartMotionSlot); //NJWAS1200
+        wristController.setSmartMotionMaxVelocity(4000, smartMotionSlot); //NJWAS1200
         wristController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-        wristController.setSmartMotionMaxAccel(1500, smartMotionSlot); //NJWAS700
+        wristController.setSmartMotionMaxAccel(2000, smartMotionSlot); //NJWAS700
         wristController.setSmartMotionAllowedClosedLoopError(1.5, smartMotionSlot);
+
+        m_Wrist.enableSoftLimit(SoftLimitDirection.kForward, true);
+        m_Wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        m_Wrist.setSoftLimit(SoftLimitDirection.kForward, 240);
+        m_Wrist.setSoftLimit(SoftLimitDirection.kReverse, 5);
+
 
 
         m_Wrist.burnFlash();

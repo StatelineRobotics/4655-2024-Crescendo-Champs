@@ -37,6 +37,7 @@ import frc.robot.subsystems.Vision.ShooterAlignments;
 import frc.robot.subsystems.mechanisms.shooter.ShooterIOSparkMax;
 import frc.robot.subsystems.mechanisms.shooter.ShooterSubsystem;
 import frc.robot.subsystems.mechanisms.MechanisimControl;
+import frc.robot.subsystems.mechanisms.MechanisimControl.State;
 import frc.robot.subsystems.mechanisms.arm.ArmIOSparkMax;
 import frc.robot.subsystems.mechanisms.arm.ArmSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberIOSparkMax;
@@ -176,19 +177,19 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(OIConstants.m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 !OIConstants.kdriveJoyButton.getRawButton(5),
-                 false),
+                 OIConstants.kdriveJoyButton.getRawButton(1)),
             drive));
 
       OIConstants.m_driverController.y().onTrue(Commands.runOnce(drive::setX, drive));
       
       OIConstants.m_driverController.rightBumper().onTrue(new InstantCommand(drive::zeroHeading));
-      OIConstants.m_driverController.b()
-        .onTrue(Commands.runOnce(
-                    () ->
-                        drive.resetOdometry(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
+        //OIConstants.m_driverController.b()
+          //.onTrue(Commands.runOnce(
+            //          () ->
+              //            drive.resetOdometry(
+                //              new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                  //    drive)
+                  //.ignoringDisable(true));
 
 
 //Mechanisim Control
@@ -236,19 +237,18 @@ public class RobotContainer {
             .whileTrue(Commands.run(
               () -> shooterAlignments.periodic()));
       
-      OIConstants.m_driverController.y()
-            .whileTrue(drive.run( 
-              () -> drive.drive(
-                -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftX(), OIConstants.kDriveDeadband), 
-                shooterAlignments.setMotors(), 
-                !OIConstants.kdriveJoyButton.getRawButton(5), false)));
+      // OIConstants.m_driverController.y()
+      //       .whileTrue(drive.run( 
+      //         () -> drive.drive(
+      //           -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+      //           -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftX(), OIConstants.kDriveDeadband), 
+      //           shooterAlignments.setMotors(), 
+      //           !OIConstants.kdriveJoyButton.getRawButton(5), false)));
       
      OIConstants.m_driverController.y()
-            .whileTrue(Commands.runEnd(
-             () -> mechanisimControl.setDesiredState(MechanisimControl.State.AUTO_AIM),
-             () -> mechanisimControl.setDesiredState(MechanisimControl.State.STORE),
-             mechanisimControl));
+            .onTrue(Commands.runOnce(
+             () -> mechanisimControl.setDesiredState(MechanisimControl.State.SMART_ANGLE)
+             ));
 
   
       new JoystickButton(OIConstants.kauxController, 9) // POV Up Grab
@@ -270,6 +270,18 @@ public class RobotContainer {
       new JoystickButton(OIConstants.kauxController, 7) // PARKCLIMBER
             .onTrue( Commands.runOnce(
               () -> mechanisimControl.setDesiredState(MechanisimControl.State.PARKCLIMBER)));
+    
+      OIConstants.m_driverController.povUp().onTrue(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.PASSING)));
+      OIConstants.m_driverController.povDown().onTrue(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.PASSING)));
+      OIConstants.m_driverController.povLeft().onTrue(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.PASSING)));
+      OIConstants.m_driverController.povRight().onTrue(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.PASSING)));
+
+      OIConstants.m_driverController.b().onTrue(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.BLUE_LINE_SHOOT)));
 
 
  //     new JoystickButton(OIConstants.kauxController, 13) // RESET BLINKIN//
