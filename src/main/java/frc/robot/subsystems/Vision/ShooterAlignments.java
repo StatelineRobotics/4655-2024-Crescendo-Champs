@@ -128,8 +128,8 @@ public class ShooterAlignments{
         }
         double distanceX = Vpose.getX() - speakerX;
         double distanceY = Vpose.getY() - speakerY;
-        double angle = Math.toDegrees(Math.atan2(distanceX, distanceY));
-        double finalangle = angle + offset % 360;
+        double angle = Math.toDegrees(Math.atan2(distanceY, distanceX));
+        double finalangle = angle + offset;
         if (finalangle > 180){
             finalangle = -(360 - finalangle);
         }

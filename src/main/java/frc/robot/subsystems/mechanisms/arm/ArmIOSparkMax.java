@@ -7,6 +7,7 @@ package frc.robot.subsystems.mechanisms.arm;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -80,13 +81,15 @@ public class ArmIOSparkMax implements ArmIO {
         armExtenderController.setIZone(0);
         armExtenderController.setFF(0.0025);
         armExtenderController.setOutputRange(-.7,.7);
-        armExtenderController.setSmartMotionMaxVelocity(1500, smartMotionSlot); //NJWAS1300
+        armExtenderController.setSmartMotionMaxVelocity(3500, smartMotionSlot); //NJWAS1300
         armExtenderController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-        armExtenderController.setSmartMotionMaxAccel(700, smartMotionSlot);  //NJWAS 600
+        armExtenderController.setSmartMotionMaxAccel(2000, smartMotionSlot);  //NJWAS 600
         armExtenderController.setSmartMotionAllowedClosedLoopError(1, smartMotionSlot);
         extendLimitSwitch = m_ArmExtender.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
         extendLimitSwitch.enableLimitSwitch(true);
         armExtenderEncoder.setPosition(0);
+        m_ArmExtender.enableSoftLimit(SoftLimitDirection.kForward,true);
+        m_ArmExtender.setSoftLimit(SoftLimitDirection.kForward, 130);
 
         m_ArmRight.burnFlash();
         m_ArmLeft.burnFlash();

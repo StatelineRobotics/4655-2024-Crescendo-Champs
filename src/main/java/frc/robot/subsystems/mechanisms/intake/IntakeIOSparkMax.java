@@ -5,6 +5,7 @@
 package frc.robot.subsystems.mechanisms.intake;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
@@ -23,7 +24,7 @@ import frc.robot.subsystems.mechanisms.MechanismConstants;
 
 /** Add your docs here. */
 public class IntakeIOSparkMax implements IntakeIO{
-    private final CANSparkMax m_Wrist;
+    private final CANSparkFlex m_Wrist;
     private final CANSparkMax  m_Intake;
     private final AbsoluteEncoder wristEncoder;
     private final RelativeEncoder intakeEncoder;
@@ -35,21 +36,21 @@ public class IntakeIOSparkMax implements IntakeIO{
 
 
     public IntakeIOSparkMax() {
-        m_Wrist = new CANSparkMax(MechanismConstants.kWristCanId, MotorType.kBrushless);
+        m_Wrist = new CANSparkFlex(MechanismConstants.kWristCanId, MotorType.kBrushless);
         m_Intake = new CANSparkMax(MechanismConstants.kIntakeCanId, MotorType.kBrushless);
         blinken = new PWMSparkMax(9);
 
         wristEncoder = m_Wrist.getAbsoluteEncoder(Type.kDutyCycle);
         intakeEncoder =  m_Intake.getEncoder();
         
-        wristEncoder.setInverted(false);    
+        wristEncoder.setInverted(true);    
         wristEncoder.setPositionConversionFactor(360);
     
         m_Wrist.setIdleMode(IdleMode.kCoast);       //MOTORBRAKE
         m_Intake.setIdleMode(IdleMode.kCoast);      //MOTORBRAKE
         m_Wrist.setInverted(false);
         m_Intake.setInverted(true);
-        m_Wrist.setSmartCurrentLimit(25);
+        m_Wrist.setSmartCurrentLimit(40);
         m_Intake.setSmartCurrentLimit(30);
     
         intakeController = m_Intake.getPIDController();
@@ -63,19 +64,19 @@ public class IntakeIOSparkMax implements IntakeIO{
 
         wristController = m_Wrist.getPIDController();
         wristController.setFeedbackDevice(wristEncoder);
-        wristController.setP(.00018);//NJ was .00028
+        wristController.setP(.000045);//NJ was .00028
         wristController.setI(0);
-        wristController.setD(0);
+        wristController.setD(00002);
         wristController.setIZone(0);
-        wristController.setFF(0.0002);
-        wristController.setOutputRange(-1,1); //NJWAS -.70 .70
+        wristController.setFF(0.0001);
+        wristController.setOutputRange(-.9,.9); //NJWAS -.70 .70
        // wristController.setPositionPIDWrappingEnabled(false);
 
         int smartMotionSlot = 0;
-        wristController.setSmartMotionMaxVelocity(2300, smartMotionSlot); //NJWAS1200
+        wristController.setSmartMotionMaxVelocity(3000, smartMotionSlot); //NJWAS1200
         wristController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
         wristController.setSmartMotionMaxAccel(1500, smartMotionSlot); //NJWAS700
-        wristController.setSmartMotionAllowedClosedLoopError(1, smartMotionSlot);
+        wristController.setSmartMotionAllowedClosedLoopError(1.5, smartMotionSlot);
 
 
         m_Wrist.burnFlash();

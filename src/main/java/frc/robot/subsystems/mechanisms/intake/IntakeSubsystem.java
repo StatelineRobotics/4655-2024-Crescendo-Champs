@@ -90,7 +90,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @AutoLogOutput(key = "Intake/OkIntake")
   public boolean OkIntake() {
-    return (Math.abs(inputs.wristposition - 37) < 20);
+    return (Math.abs(inputs.wristposition - 22) < 20);
   }
 
 
