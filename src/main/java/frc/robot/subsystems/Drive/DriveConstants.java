@@ -22,9 +22,9 @@ public final class DriveConstants {
     public static final double kMaxAngularSpeed = (Math.PI * 1.3) ; // radians per second // WAS 2 * Math.PI
     public static final double KMaxLinearSpeed = Units.feetToMeters(14.5);
 
-    public static final double slowkMaxSpeedMetersPerSecond = 4.8/2;
-    public static final double slowkMaxAngularSpeed = (Math.PI * 1.3/2) ; // radians per second // WAS 2 * Math.PI
-    public static final double slowKMaxLinearSpeed = Units.feetToMeters(14.5/2);
+    public static final double slowkMaxSpeedMetersPerSecond = 4.8/3;
+    public static final double slowkMaxAngularSpeed = (Math.PI * 1.3/3) ; // radians per second // WAS 2 * Math.PI
+    public static final double slowKMaxLinearSpeed = Units.feetToMeters(14.5/3);
 
     public static final double kDirectionSlewRate = 10.0; // radians per second
     public static final double kMagnitudeSlewRate = 10.0; // percent per second (1 = 100%)

@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.mechanisms.MechanismConstants;
 
 
@@ -58,6 +59,9 @@ public class ShooterIOSparkMax implements ShooterIO {
 
         m_BottomShooter.burnFlash();
         m_TopShooter.burnFlash();
+
+        SmartDashboard.putBoolean("TopShootMode", ( m_BottomShooter.getIdleMode() == IdleMode.kBrake));
+        SmartDashboard.putBoolean("BottomShootMode", (m_TopShooter.getIdleMode() == IdleMode.kBrake));
 
     }
 

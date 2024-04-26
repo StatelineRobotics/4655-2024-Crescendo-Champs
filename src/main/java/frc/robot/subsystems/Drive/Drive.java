@@ -233,7 +233,7 @@ public class Drive extends SubsystemBase {
         double rotDelivered;
 
         // Convert the commanded speeds into the correct units for the drivetrain
-        if (rateLimit) {
+        if (!rateLimit) {
             xSpeedDelivered = xSpeedCommanded * DriveConstants.slowkMaxSpeedMetersPerSecond;
             ySpeedDelivered = ySpeedCommanded * DriveConstants.slowkMaxSpeedMetersPerSecond;
             rotDelivered = m_currentRotation * DriveConstants.slowkMaxAngularSpeed;

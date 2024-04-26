@@ -13,6 +13,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
@@ -48,7 +50,7 @@ public class ArmIOSparkMax implements ArmIO {
    
         m_ArmRight.setIdleMode(IdleMode.kBrake);    //MOTORBRAKE
         m_ArmLeft.setIdleMode(IdleMode.kBrake);     //MOTORBRAKE
-        m_ArmExtender.setIdleMode(IdleMode.kCoast); //MOTORBRAKE
+        m_ArmExtender.setIdleMode(IdleMode.kBrake); //MOTORBRAKE
         m_ArmRight.setInverted(false);
         m_ArmLeft.setInverted(false);
         m_ArmExtender.setInverted(true);
@@ -94,6 +96,9 @@ public class ArmIOSparkMax implements ArmIO {
         m_ArmRight.burnFlash();
         m_ArmLeft.burnFlash();
         m_ArmExtender.burnFlash();
+        SmartDashboard.putBoolean("ArmExtendMode", (m_ArmExtender.getIdleMode() == IdleMode.kBrake));
+        SmartDashboard.putBoolean("ArmRightMode", (m_ArmRight.getIdleMode() == IdleMode.kBrake));
+        SmartDashboard.putBoolean("ArmLeftMode", (m_ArmLeft.getIdleMode() == IdleMode.kBrake));
     }
 
      @Override

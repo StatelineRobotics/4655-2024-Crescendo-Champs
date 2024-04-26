@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -48,7 +49,7 @@ public class IntakeIOSparkMax implements IntakeIO{
         wristEncoder.setInverted(true);    
         wristEncoder.setPositionConversionFactor(360);
     
-        m_Wrist.setIdleMode(IdleMode.kCoast);       //MOTORBRAKE
+        m_Wrist.setIdleMode(IdleMode.kBrake);       //MOTORBRAKE
         m_Intake.setIdleMode(IdleMode.kCoast);      //MOTORBRAKE
         m_Wrist.setInverted(false);
         m_Intake.setInverted(true);
@@ -62,13 +63,13 @@ public class IntakeIOSparkMax implements IntakeIO{
         intakeController.setD(0);
         intakeController.setIZone(0);
         intakeController.setFF(.0007);
-        intakeController.setOutputRange(-.40,.40);
+        intakeController.setOutputRange(-.70,.70);
 
         wristController = m_Wrist.getPIDController();
         wristController.setFeedbackDevice(wristEncoder);
         wristController.setP(.00007);//NJ was .00028
         wristController.setI(0);
-        wristController.setD(00003);
+        wristController.setD(00004);
         wristController.setIZone(0);
         wristController.setFF(0.0001);
         wristController.setOutputRange(-1,1); //NJWAS -.70 .70
@@ -78,7 +79,7 @@ public class IntakeIOSparkMax implements IntakeIO{
         wristController.setSmartMotionMaxVelocity(4000, smartMotionSlot); //NJWAS1200
         wristController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
         wristController.setSmartMotionMaxAccel(2000, smartMotionSlot); //NJWAS700
-        wristController.setSmartMotionAllowedClosedLoopError(1.5, smartMotionSlot);
+        wristController.setSmartMotionAllowedClosedLoopError(3, smartMotionSlot);
 
         m_Wrist.enableSoftLimit(SoftLimitDirection.kForward, true);
         m_Wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -90,6 +91,8 @@ public class IntakeIOSparkMax implements IntakeIO{
         m_Wrist.burnFlash();
         m_Intake.burnFlash();
 
+
+
         laserCAN = new LaserCan(MechanismConstants.kLaserCanId);
 
         try {
@@ -100,6 +103,8 @@ public class IntakeIOSparkMax implements IntakeIO{
         }
 
  
+        SmartDashboard.putBoolean("IntakeMode", (m_Intake.getIdleMode() == IdleMode.kBrake));
+        SmartDashboard.putBoolean("WristMode", (m_Wrist.getIdleMode() == IdleMode.kBrake));
     } 
     
     @Override

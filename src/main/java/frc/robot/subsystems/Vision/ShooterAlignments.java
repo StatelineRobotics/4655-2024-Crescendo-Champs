@@ -25,8 +25,8 @@ public class ShooterAlignments{
     private InterpolatingTreeMap<Double, Double> interpolateMap = new InterpolatingDoubleTreeMap();
     private PhotonVision photonVision;
     private Drive drive;
-    private Rotation3d SpeakerAngle = new Rotation3d();
-    private PIDController rotationController = new PIDController(.1,0,0);  //4 0 0
+    //private Rotation3d SpeakerAngle = new Rotation3d();
+    private PIDController rotationController = new PIDController(10,0,0);  //4 0 0
 
     public double armAngle;
     public boolean VhasTarget = false;
@@ -42,22 +42,30 @@ public class ShooterAlignments{
     }
 
 
+    public Optional<Pose2d> visionPose() {
+        Optional<Pose2d> estimatedPose = photonVision.getEstimatedPose();
+        return estimatedPose;
+    }
+
     public void periodic(){
         addValuesToMap();
-        Optional<Pose2d> estimatedPose = photonVision.getEstimatedPose();
+        Optional<Pose2d> estimatedPose = visionPose();
         if (estimatedPose.isPresent() && photonVision.getPoseAmbiguity()  && photonVision.getLatestResult().hasTargets())  {
             VhasTarget = true;
             Vpose = estimatedPose.get();
+            Pose2d pose = estimatedPose.get();
             double distanceToSpeaker = getDistanceToSpeaker(Vpose);
             Logger.recordOutput("ShooterAlignmets/Distance", distanceToSpeaker);
             Logger.recordOutput("ShooterAlignments/Pose", Vpose);
             armAngle = angleArmToSpeaker(distanceToSpeaker);
             SmartDashboard.putNumber("armangle", armAngle);
-            setMotors();
+            drive.resetOdometry(pose);
+            //setMotors();
 
         } else {
             VhasTarget = false;
             armAngle = 22.5;
+            Logger.recordOutput("ShooterAlignmets/HasPose", VhasTarget);
 
         }
     
@@ -128,14 +136,10 @@ public class ShooterAlignments{
         }
         double distanceX = Vpose.getX() - speakerX;
         double distanceY = Vpose.getY() - speakerY;
-        double angle = Math.toDegrees(Math.atan2(distanceY, distanceX));
-        double finalangle = angle + offset;
-        if (finalangle > 180){
-            finalangle = -(360 - finalangle);
-        }
+        double angle = Math.atan2(-distanceY, -distanceX);
 
-        Logger.recordOutput("ShooterAlignments/HeadingtoFaceSpeaker", Math.toDegrees(finalangle));
-        return finalangle;
+        Logger.recordOutput("ShooterAlignments/HeadingtoFaceSpeaker", Math.toDegrees(angle));
+        return angle;
 
     }
     

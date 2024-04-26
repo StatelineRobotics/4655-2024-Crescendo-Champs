@@ -11,7 +11,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.mechanisms.MechanismConstants;
 
 /** Add your docs here. */
@@ -91,6 +91,9 @@ public class ClimberIOSparkMax implements ClimberIO {
 
         m_LeftClimber.burnFlash();
         m_RightClimber.burnFlash();
+
+        SmartDashboard.putBoolean("ClimbLeftMode", (m_LeftClimber.getIdleMode() == IdleMode.kBrake));
+        SmartDashboard.putBoolean("ClimbLeftMode", (m_RightClimber.getIdleMode() == IdleMode.kBrake));        
     }
 
     @Override

@@ -40,6 +40,7 @@ public class MechanisimControl extends SubsystemBase {
     SMART_ANGLE,
     PASSING,
     BLUE_LINE_SHOOT,
+    CLIMBSHOOT2,
   }
 
   public boolean AmpShoot;
@@ -71,7 +72,7 @@ public class MechanisimControl extends SubsystemBase {
             intakeSubsystem.requestIntake(0, 50);
             shooterSubsystem.requestRPM(0, 0);
             armSubsystem.requestArmPosition(37, 0);
-                        intakeSubsystem.requestBlinken(0.53);
+            intakeSubsystem.requestBlinken(0.53);
           } else{
             intakeSubsystem.requestIntake(0, 50);
             shooterSubsystem.requestRPM(0, 0);
@@ -231,14 +232,14 @@ public class MechanisimControl extends SubsystemBase {
 
       case CLIMB -> {
         if (armSubsystem.OkToClimbWrist()){
-          intakeSubsystem.requestIntake(0,115);
+          intakeSubsystem.requestIntake(0,120);
         } else {
-          intakeSubsystem.requestIntake(0,115);
+          intakeSubsystem.requestIntake(0,120);
         }
         
         shooterSubsystem.requestRPM(0, 0);
           if (climberSubsystem.ClimberOkToReach()) {
-            armSubsystem.requestArmPosition(94, 85);
+            armSubsystem.requestArmPosition(94, 95);
           }
           else {
 
@@ -251,9 +252,18 @@ public class MechanisimControl extends SubsystemBase {
       }
 
       case CLIMBSHOOT -> {
-        intakeSubsystem.requestIntake(500,115);
+        intakeSubsystem.requestIntake(500,120);
         shooterSubsystem.requestRPM(0, 0);
-        armSubsystem.requestArmPosition(94, 85);
+        armSubsystem.requestArmPosition(94, 95);
+        climberSubsystem.requestClimberPosition(0);
+        intakeSubsystem.requestBlinken(-.57);
+        break;
+      }
+
+      case CLIMBSHOOT2 -> {
+        intakeSubsystem.requestIntake(500,120);
+        shooterSubsystem.requestRPM(0, 0);
+        armSubsystem.requestArmPosition(90, 95);
         climberSubsystem.requestClimberPosition(0);
         intakeSubsystem.requestBlinken(-.57);
         break;
@@ -309,7 +319,7 @@ public class MechanisimControl extends SubsystemBase {
         case BLUE_LINE_SHOOT -> {
         intakeSubsystem.requestIntake(0,232);
         shooterSubsystem.requestRPM(5600, 5900);
-        armSubsystem.requestArmPosition(34, 10);
+        armSubsystem.requestArmPosition(33.5, 10);
         intakeSubsystem.requestBlinken(0.53);
         break;
       }
