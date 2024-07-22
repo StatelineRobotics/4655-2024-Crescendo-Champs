@@ -54,7 +54,9 @@ public class ArmSubsystem extends SubsystemBase {
     return inputs.armExtenderPosCurrent;
   }
 
-
+  public void resetLimitSwitch() {
+    io.zeroArmPosition();
+  }
 
   private void stop() {
     //armPos = 15;
@@ -90,6 +92,9 @@ public class ArmSubsystem extends SubsystemBase {
     return (Math.abs(inputs.armExtenderPosCurrent - 127.5) < 5);
   }
 
+  public boolean limitSwitchPressed() {
+    return inputs.limitSwitchPressed;
+  }
 
 }
 

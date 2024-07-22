@@ -269,7 +269,7 @@ public class RobotContainer {
       new JoystickButton(OIConstants.kauxController, 13) // POV Up CLIMB Shoot
             .onTrue( Commands.sequence(
               Commands.runOnce(() -> mechanisimControl.setDesiredState(MechanisimControl.State.CLIMBSHOOT)),
-              Commands.waitSeconds(2),
+              Commands.waitSeconds(1),
               Commands.runOnce(() -> mechanisimControl.setDesiredState(MechanisimControl.State.CLIMBSHOOT2))
               ));
 

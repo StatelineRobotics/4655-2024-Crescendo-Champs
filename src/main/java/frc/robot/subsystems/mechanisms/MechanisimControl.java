@@ -71,8 +71,14 @@ public class MechanisimControl extends SubsystemBase {
           if (armSubsystem.OkToHome()){ 
             intakeSubsystem.requestIntake(0, 50);
             shooterSubsystem.requestRPM(0, 0);
-            armSubsystem.requestArmPosition(37, 0);
             intakeSubsystem.requestBlinken(0.53);
+          armSubsystem.requestArmPosition(37, 0);
+//            if(armSubsystem.limitSwitchPressed()) {
+//              armSubsystem.resetLimitSwitch();
+//              armSubsystem.requestArmPosition(37, 0);
+//            } else {
+//              armSubsystem.requestArmPosition(37, -1000);
+//            }
           } else{
             intakeSubsystem.requestIntake(0, 50);
             shooterSubsystem.requestRPM(0, 0);
@@ -252,7 +258,7 @@ public class MechanisimControl extends SubsystemBase {
       }
 
       case CLIMBSHOOT -> {
-        intakeSubsystem.requestIntake(500,120);
+        intakeSubsystem.requestIntake(500,115);
         shooterSubsystem.requestRPM(0, 0);
         armSubsystem.requestArmPosition(94, 95);
         climberSubsystem.requestClimberPosition(0);
@@ -261,9 +267,9 @@ public class MechanisimControl extends SubsystemBase {
       }
 
       case CLIMBSHOOT2 -> {
-        intakeSubsystem.requestIntake(500,120);
+        intakeSubsystem.requestIntake(500,110);
         shooterSubsystem.requestRPM(0, 0);
-        armSubsystem.requestArmPosition(90, 95);
+        armSubsystem.requestArmPosition(88, 95);
         climberSubsystem.requestClimberPosition(0);
         intakeSubsystem.requestBlinken(-.57);
         break;

@@ -14,6 +14,8 @@ public interface ClimberIO {
     public double leftClimberPosition = 0.0;
     public double rightClimberCurrent;
     public double leftClimberCurrent;
+    public boolean leftClimberLimit;
+    public boolean rightClimberLimit;
 
    }
 

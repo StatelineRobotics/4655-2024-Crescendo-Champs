@@ -233,7 +233,7 @@ public class Drive extends SubsystemBase {
         double rotDelivered;
 
         // Convert the commanded speeds into the correct units for the drivetrain
-        if (!rateLimit) {
+        if (rateLimit) {
             xSpeedDelivered = xSpeedCommanded * DriveConstants.slowkMaxSpeedMetersPerSecond;
             ySpeedDelivered = ySpeedCommanded * DriveConstants.slowkMaxSpeedMetersPerSecond;
             rotDelivered = m_currentRotation * DriveConstants.slowkMaxAngularSpeed;
@@ -243,6 +243,10 @@ public class Drive extends SubsystemBase {
             ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
             rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
         }
+        xSpeedDelivered = xSpeedCommanded * SmartDashboard.getNumber("Max Velo", DriveConstants.kMaxSpeedMetersPerSecond);
+        ySpeedDelivered = ySpeedCommanded * SmartDashboard.getNumber("Max Velo", DriveConstants.kMaxSpeedMetersPerSecond);
+        rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
+
 
         Logger.recordOutput("Swerve/FieldDelative", fieldRelative);
         Logger.recordOutput("Swerve/XspeedCommanded", xSpeedDelivered);

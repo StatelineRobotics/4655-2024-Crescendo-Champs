@@ -20,6 +20,8 @@ public interface ArmIO {
         public double armExtenderOutput = 0.0;  
         public double armPosSet = MechanismConstants.kArmHomePOS;
         public double armExtenderPosSet = MechanismConstants.kArmExtenderHomePOS;
+        public boolean armLimitSwitch;
+        public boolean limitSwitchPressed;
 
     }
   
@@ -27,6 +29,8 @@ public interface ArmIO {
     default void updateInputs(ArmIOInputs inputs) {}
     
     default void setArmPositions(double armPosSet, double armExtenderPosSet) {}
+
+    default void zeroArmPosition() {}
 
     /** Stop Arm */
     default void stop() {}   

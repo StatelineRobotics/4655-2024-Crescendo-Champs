@@ -24,6 +24,7 @@ public class ClimberIOSparkMax implements ClimberIO {
     private SparkPIDController leftClimberController;
     private SparkLimitSwitch rightClimberLimitSwitch;
     private SparkLimitSwitch leftClimberLimitSwitch;
+    private boolean zeroed;
 
     // PID coefficients
     
@@ -93,7 +94,12 @@ public class ClimberIOSparkMax implements ClimberIO {
         m_RightClimber.burnFlash();
 
         SmartDashboard.putBoolean("ClimbLeftMode", (m_LeftClimber.getIdleMode() == IdleMode.kBrake));
-        SmartDashboard.putBoolean("ClimbLeftMode", (m_RightClimber.getIdleMode() == IdleMode.kBrake));        
+        SmartDashboard.putBoolean("ClimbLeftMode", (m_RightClimber.getIdleMode() == IdleMode.kBrake));
+        if (leftClimberLimitSwitch.isPressed() && rightClimberLimitSwitch.isPressed()) {
+            zeroed = true;
+        } else {
+            zeroed = false;
+        }       
     }
 
     @Override
@@ -102,6 +108,8 @@ public class ClimberIOSparkMax implements ClimberIO {
         inputs.leftClimberPosition = leftClimberEncoder.getPosition();
         inputs.rightClimberCurrent = m_RightClimber.getOutputCurrent();
         inputs.leftClimberCurrent = m_LeftClimber.getOutputCurrent();
+        inputs.leftClimberLimit = leftClimberLimitSwitch.isPressed();
+        inputs.rightClimberLimit = rightClimberLimitSwitch.isPressed();
 
 
         
@@ -114,12 +122,23 @@ public class ClimberIOSparkMax implements ClimberIO {
             leftClimberEncoder.setPosition(0);
         }
 
+        if(leftClimberLimitSwitch.isPressed() && rightClimberLimitSwitch.isPressed()) {
+            zeroed = true;
+        }
+        SmartDashboard.putBoolean("zeroed", zeroed);
+
     }
 
     @Override
     public void setclimberMotors(double climberPosition) {
+        if (zeroed) {
        leftClimberController.setReference(climberPosition, CANSparkMax.ControlType.kSmartMotion);
-       rightClimberController.setReference(climberPosition, CANSparkMax.ControlType.kSmartMotion);
+       rightClimberController.setReference(climberPosition, CANSparkMax.ControlType.kSmartMotion); 
+    } else {
+       leftClimberController.setReference(-100, CANSparkMax.ControlType.kSmartMotion);
+       rightClimberController.setReference(-100, CANSparkMax.ControlType.kSmartMotion); 
+        
+    }
     }
 
 

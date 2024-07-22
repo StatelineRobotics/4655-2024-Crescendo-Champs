@@ -9,6 +9,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
@@ -57,8 +58,9 @@ public class ArmIOSparkMax implements ArmIO {
         m_ArmRight.setSmartCurrentLimit(40);
         m_ArmLeft.setSmartCurrentLimit(40);
         m_ArmExtender.setSmartCurrentLimit(20);
-        m_ArmLeft.follow(m_ArmRight);  
-    
+        m_ArmLeft.follow(m_ArmRight);
+
+
         int smartMotionSlot = 0;
 
         armController = m_ArmRight.getPIDController();
@@ -108,11 +110,14 @@ public class ArmIOSparkMax implements ArmIO {
         inputs.armRightOutput = m_ArmRight.getAppliedOutput();
         inputs.armLeftOutput = m_ArmLeft.getAppliedOutput();
         inputs.armExtenderOutput = m_ArmExtender.getAppliedOutput();
+        inputs.armLimitSwitch = extendLimitSwitch.isPressed();
         
-    
-          //if(extendLimitSwitch.isPressed()) {
-          //  armExtenderEncoder.setPosition(0);
-        //}
+ 
+          if(extendLimitSwitch.isPressed()) {
+            inputs.limitSwitchPressed = true;
+        } else {
+            inputs.limitSwitchPressed = false;
+        }
     }
    
     
@@ -130,6 +135,11 @@ public class ArmIOSparkMax implements ArmIO {
         m_ArmLeft.set(0);
         m_ArmExtender.set(0);
      }
+
+    @Override
+    public void zeroArmPosition() {
+        armExtenderEncoder.setPosition(0.0);
+    }
 
   
 
