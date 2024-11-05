@@ -12,20 +12,20 @@
         "y": 6.772030690161363
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CloseAmpNote"
     },
     {
       "anchor": {
-        "x": 1.8896976980945828,
-        "y": 6.25
+        "x": 2.004958988519973,
+        "y": 6.417538427088266
       },
       "prevControl": {
-        "x": 1.873187449322479,
-        "y": 6.259532196572962
+        "x": 1.9884487397478692,
+        "y": 6.427070623661227
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "closeAmpShot"
     }
   ],
   "rotationTargets": [],
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 33.27452764274662,
+    "rotation": 27.255328374942934,
     "rotateFast": false
   },
   "reversed": false,

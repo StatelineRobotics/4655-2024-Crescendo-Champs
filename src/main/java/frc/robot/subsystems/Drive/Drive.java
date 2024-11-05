@@ -4,7 +4,11 @@
 
 package frc.robot.subsystems.Drive;
 
+import java.util.List;
+
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
@@ -36,6 +40,7 @@ public class Drive extends SubsystemBase {
     private final Module m_frontRight;
     private final Module m_rearLeft;
     private final Module m_rearRight;
+    private PhotonCamera camera;
 
     // The gyro sensor
     private GyroIO gyro;
@@ -50,10 +55,15 @@ public class Drive extends SubsystemBase {
     SwerveDriveOdometry m_odometry;   
     private Pose2d pose = new Pose2d();
 
+    public  boolean targetVisible = false;
+    public double targetYaw = 0.0;
+    public double targetPitch = 0.0;
+
 
 
     /** Creates a new DriveSubsystem. */
     public Drive(GyroIO gyro, ModuleIO fl, ModuleIO fr, ModuleIO bl, ModuleIO br) {
+        camera = new PhotonCamera("Back");
         this.gyro = gyro;
         m_frontLeft = new Module(fl, 0);
         m_frontRight = new Module(fr, 1);
@@ -117,6 +127,21 @@ public class Drive extends SubsystemBase {
 
     @Override
     public void periodic() {
+        targetVisible = false;
+        var result = camera.getLatestResult();
+        if (result.hasTargets()) {
+            List<PhotonTrackedTarget> targets = result.getTargets();
+            for (var target : targets) {
+                if (target.getFiducialId() == 7) {
+                    targetVisible = true;
+                    targetYaw = target.getYaw();
+                    targetPitch = target.getPitch();
+                }
+            }
+        }
+        SmartDashboard.putBoolean("hasVisionTarget", targetVisible);
+        SmartDashboard.putNumber("target Yaw", targetYaw);
+        SmartDashboard.putNumber("targetPitch", targetPitch);
         gyro.updateInputs(gyroInputs);
         Logger.processInputs("Gyro", gyroInputs);
         m_frontLeft.updateInputs();

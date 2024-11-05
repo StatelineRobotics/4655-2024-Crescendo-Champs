@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.38939075025083,
-        "y": 6.265297551993107
+        "x": 6.349679347004912,
+        "y": 6.124767513443729
       },
       "prevControl": {
-        "x": 5.969195317931714,
-        "y": 6.799085884143762
+        "x": 6.929483914685796,
+        "y": 6.658555845594384
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "FarShot",
   "previewStartingState": {
     "rotation": 34.695153531233885,
     "velocity": 0

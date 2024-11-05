@@ -21,12 +21,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Drive.*;
 import frc.robot.subsystems.mechanisms.intake.IntakeIOSparkMax;
@@ -42,6 +43,8 @@ import frc.robot.subsystems.mechanisms.arm.ArmIOSparkMax;
 import frc.robot.subsystems.mechanisms.arm.ArmSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberIOSparkMax;
 import frc.robot.subsystems.mechanisms.climber.ClimberSubsystem;
+
+import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -60,9 +63,13 @@ public class RobotContainer {
   private final ClimberSubsystem climberSubsystem;
   private final MechanisimControl mechanisimControl;
   private final ShooterAlignments shooterAlignments;
+  
  // private final ShooterAlignments shooterAlignments;
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+
+  private final Trigger autoAimTrigger = new Trigger(this::runAutoAim);
+  private final Trigger hasTagTrigger = new Trigger(this::hasTag);
  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -128,7 +135,7 @@ public class RobotContainer {
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Configure the button bindings
-     configureButtonBindings();
+    configureButtonBindings();
   }
 
  
@@ -151,13 +158,13 @@ public class RobotContainer {
        NamedCommands.registerCommand("Speaker",
        new InstantCommand(() -> mechanisimControl.setDesiredState(MechanisimControl.State.SPEAKER)));
 
-              NamedCommands.registerCommand("WingPrep",
+       NamedCommands.registerCommand("WingPrep",
        new InstantCommand(() -> mechanisimControl.setDesiredState(MechanisimControl.State.WINGPREP)));
 
-    NamedCommands.registerCommand("Pickup",
+       NamedCommands.registerCommand("Pickup",
        new InstantCommand(() -> mechanisimControl.setDesiredState(MechanisimControl.State.PICKUP)));
 
-    NamedCommands.registerCommand("AmpShoot",
+       NamedCommands.registerCommand("AmpShoot",
       new InstantCommand(() -> mechanisimControl.setDesiredState(MechanisimControl.State.AMPSHOOT)));
 
       NamedCommands.registerCommand("FarShot",
@@ -181,7 +188,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(OIConstants.m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 !OIConstants.kdriveJoyButton.getRawButton(5),
                  OIConstants.kdriveJoyButton.getRawButton(1)),
-            drive));
+            drive).withName("default drive command"));
 
       OIConstants.m_driverController.y().onTrue(Commands.runOnce(drive::setX, drive));
       
@@ -200,11 +207,16 @@ public class RobotContainer {
       new JoystickButton(OIConstants.kauxController, 8) // HOME
             .onTrue( Commands.runOnce(
               () -> mechanisimControl.setDesiredState(MechanisimControl.State.HOME)));
+      
+      OIConstants.m_AuxXBox.rightBumper().onTrue(Commands.runOnce(
+              () -> mechanisimControl.setDesiredState(MechanisimControl.State.HOME)));
 
       new JoystickButton(OIConstants.kauxController, 2) // PICKUP
             .onTrue(Commands.runOnce(
               () -> mechanisimControl.setDesiredState(MechanisimControl.State.PICKUP)));
 
+      OIConstants.m_AuxXBox.rightTrigger().onTrue(Commands.runOnce(
+              () -> mechanisimControl.setDesiredState(MechanisimControl.State.PICKUP)));              
       // new JoystickButton(OIConstants.kauxController, 6) // EJECT
       //       .onTrue(Commands.runOnce(
       //         () -> mechanisimControl.setDesiredState(MechanisimControl.State.EJECT)));
@@ -213,7 +225,10 @@ public class RobotContainer {
             .onTrue(Commands.runOnce(
               () -> mechanisimControl.setDesiredState(MechanisimControl.State.AMP)));
 
-     OIConstants.m_driverController.x()// AMPSHOOT 
+      OIConstants.m_AuxXBox.leftTrigger().onTrue(Commands.runOnce(
+              () -> mechanisimControl.setDesiredState(MechanisimControl.State.AMP)));
+     
+      OIConstants.m_driverController.x()// AMPSHOOT 
             .onTrue(Commands.runOnce(
               () -> mechanisimControl.setDesiredState(MechanisimControl.State.AMPSHOOT)));
 
@@ -221,6 +236,10 @@ public class RobotContainer {
       new JoystickButton(OIConstants.kauxController, 4) // PREPARE_SHOOT
             .onTrue( Commands.runOnce(
               () -> mechanisimControl.setDesiredState(MechanisimControl.State.PREPARE_SHOOT)));
+
+      OIConstants.m_AuxXBox.leftBumper().onTrue(Commands.runOnce(
+              () -> mechanisimControl.setDesiredState(MechanisimControl.State.STORE)));
+
 
       new JoystickButton(OIConstants.kauxController, 3) // STORE
             .onTrue( Commands.runOnce(
@@ -285,7 +304,29 @@ public class RobotContainer {
         ()-> mechanisimControl.setDesiredState(State.PASSING)));
 
       new JoystickButton(OIConstants.kauxController, 6).onTrue(Commands.runOnce(
-        ()-> mechanisimControl.setDesiredState(State.BLUE_LINE_SHOOT)));
+        ()-> mechanisimControl.setDesiredState(State.SLOWSHOT)));
+    
+    OIConstants.m_AuxXBox.y().onTrue(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.SLOWSHOT)));
+    OIConstants.m_AuxXBox.b().onTrue(Commands.runOnce(()-> mechanisimControl.setDesiredState(State.PREPARE_SHOOT)));
+    
+    autoAimTrigger.whileTrue(//Commands.runOnce(
+        //()-> mechanisimControl.setDesiredState(State.PREPARE_SHOOT))
+        //.andThen(
+        autoTarget()
+        //)
+        //.until(this::readyToAutoShoot)
+        //.andThen(Commands.runOnce(
+        //()-> mechanisimControl.setDesiredState(State.SHOOT)))
+        );
+    hasTagTrigger.onTrue(Commands.runOnce(() -> intakeSubsystem.requestBlinken(.77)));
+    hasTagTrigger.onFalse(Commands.runOnce(() -> intakeSubsystem.requestBlinken(.61)));
+    SmartDashboard.putData(drive);
+
+
+
+
+
 
 
  //     new JoystickButton(OIConstants.kauxController, 13) // RESET BLINKIN//
@@ -301,6 +342,123 @@ public class RobotContainer {
   
   }
 
+  public Command whichAutoTarget() {
+    boolean always = true;
+    if (always) {
+      return Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.PREPARE_SHOOT))
+        .andThen(autoTarget())
+        .until(this::readyToAutoShoot)
+        .andThen(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.SHOOT)));
+    } else {
+      return Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.AUTO_SHOOT))
+        .andThen(autofarTarget())
+        .until(this::readyToFarAutoShoot)
+        .andThen(Commands.runOnce(
+        ()-> mechanisimControl.setDesiredState(State.SHOOT)));
+    }
+  }
+
+  public Command autoTarget(){
+      return
+        new RunCommand(
+          () -> drive.drive(
+              autoYAxis(),
+              autoXAxis(),
+              -drive.targetYaw * .125 * .1,
+              false,
+              OIConstants.kdriveJoyButton.getRawButton(1)),
+              drive).withName("auto aim command");
+  }
+
+    public Command autofarTarget(){
+      return
+        new RunCommand(
+          
+          () -> drive.drive(
+              autoFarYAxis(),
+              -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+              -drive.targetYaw * .125 * .1,
+              false,
+              OIConstants.kdriveJoyButton.getRawButton(1)),
+              drive).withName("auto aim command");
+  }
+
+  public double autoYAxis() {
+    double yAxis = 0;
+      double error = drive.targetPitch - 24.0;
+      if (error > .25) {
+        yAxis = .125 * error; 
+        } else if (error < -.25) {
+        yAxis = .125 * error;
+        }
+      yAxis = Math.sin(drive.targetYaw) * yAxis;
+    
+    return yAxis;
+  }
+
+  public double autoXAxis() {
+    double xAxis = 0.0;
+    double error = drive.targetPitch - 24.0;
+        if (error > .25) {
+        xAxis = .125 * error; 
+        } else if (error < -.25) {
+        xAxis = .125 * error;
+        }
+      xAxis = Math.cos(drive.targetYaw) * xAxis;
+      
+    return xAxis;
+  }
+
+    public double autoFarYAxis() {
+      double yAxis = -MathUtil.applyDeadband(OIConstants.m_driverController.getLeftY(), OIConstants.kDriveDeadband);
+      double error = drive.targetPitch - 16.5;
+      if (Math.abs(drive.targetYaw) < 2.5) {
+         if (error > .25) {
+          yAxis = .125 * error; 
+         } else if (error < -.25) {
+          yAxis = .125 * error;
+         }
+
+      }
+      return yAxis;
+  }
+
+
+  public boolean runAutoAim(){
+    if(OIConstants.kdriveJoyButton.getRawButton(1) && drive.targetVisible){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean readyToAutoShoot() {
+    if (Math.abs(drive.targetYaw) < 2.5 &&  Math.abs(drive.targetPitch - 24.0) < .25) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean hasTag() {
+    if (drive.targetVisible && mechanisimControl.MachanismState() != State.PICKUP.toString()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean readyToFarAutoShoot() {
+    if (Math.abs(drive.targetYaw) < 2.5 &&  Math.abs(drive.targetPitch - 16.5) < .25) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
   public IntakeSubsystem getIntakeSubsystem(){
     return intakeSubsystem;
@@ -308,6 +466,10 @@ public class RobotContainer {
 
   public ShooterSubsystem getShooterSubsystem(){
     return shooterSubsystem;
+  }
+
+  public double desiredArmAngle() {
+    return 22.5;
   }
 
   /**

@@ -5,10 +5,17 @@
 package frc.robot.subsystems.mechanisms;
 
 import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
 
+
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Vision.ShooterAlignments;
 import frc.robot.subsystems.mechanisms.arm.ArmSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberSubsystem;
@@ -41,9 +48,12 @@ public class MechanisimControl extends SubsystemBase {
     PASSING,
     BLUE_LINE_SHOOT,
     CLIMBSHOOT2,
+    SLOWSHOT,
+    AUTO_SHOOT,
   }
 
   public boolean AmpShoot;
+  public double desiredArmAngle = 50;
   private State currentState = State.HOME;
  
 
@@ -53,6 +63,7 @@ public class MechanisimControl extends SubsystemBase {
   private final ArmSubsystem armSubsystem;
   private final ClimberSubsystem climberSubsystem;
   private final ShooterAlignments shooterAlignments;
+  public Trigger intakingNote = new Trigger(this::intakeNote);
 
   /** Creates a new MechanisimControl. */
   public MechanisimControl(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, ArmSubsystem armSubsystem, ClimberSubsystem climberSubsystem, ShooterAlignments shooterAlignments) {
@@ -61,6 +72,7 @@ public class MechanisimControl extends SubsystemBase {
     this.armSubsystem = armSubsystem;
     this.climberSubsystem = climberSubsystem;
     this.shooterAlignments = shooterAlignments; 
+    //intakingNote.onTrue(rumbleCommand());
   }
 
   @Override
@@ -210,6 +222,14 @@ public class MechanisimControl extends SubsystemBase {
         intakeSubsystem.requestBlinken(0.53);
         break;
       }
+  
+        case SLOWSHOT -> {
+        intakeSubsystem.requestIntake(0,232);
+        shooterSubsystem.requestRPM(5600/3.0, 5900/3.0);
+        armSubsystem.requestArmPosition(22.5, 10);
+        intakeSubsystem.requestBlinken(0.53);
+        break;
+      }
 
 
       case SHOOT -> {
@@ -329,6 +349,14 @@ public class MechanisimControl extends SubsystemBase {
         intakeSubsystem.requestBlinken(0.53);
         break;
       }
+
+        case AUTO_SHOOT -> {
+        intakeSubsystem.requestIntake(0,232);
+        shooterSubsystem.requestRPM(5600, 5900);
+        armSubsystem.requestArmPosition(40, 10);
+        intakeSubsystem.requestBlinken(0.53);
+        break;
+      }
       
 
 
@@ -336,6 +364,25 @@ public class MechanisimControl extends SubsystemBase {
 
 
     
+  }
+
+  public boolean intakeNote(){
+    if(intakeSubsystem.HasNote() && armSubsystem.extendsFar() && intakeSubsystem.OkIntake()){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  private void rumbleController(double strength) {
+    OIConstants.m_driverController.getHID().setRumble(RumbleType.kBothRumble, strength);
+  }
+
+  private Command rumbleCommand() {
+    return Commands.runOnce(() -> rumbleController(50))
+          .andThen(new WaitCommand(1))
+          .andThen(() -> rumbleController(0));
   }
   
    

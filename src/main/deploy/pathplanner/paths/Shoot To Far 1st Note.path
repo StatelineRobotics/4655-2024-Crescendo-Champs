@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.38939075025083,
-        "y": 6.265297551993107
+        "x": 6.349679347004912,
+        "y": 6.124767513443729
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.69625183930933,
-        "y": 6.780679389931669
+        "x": 7.656540436063412,
+        "y": 6.640149351382291
       },
       "isLocked": false,
       "linkedName": "FarShot"
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "FarShot",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

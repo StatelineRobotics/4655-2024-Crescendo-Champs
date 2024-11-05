@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.51,
-        "y": 4.56
+        "x": 2.9886692583656194,
+        "y": 4.051949444840401
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.530691743333289,
-        "y": 4.5502720253495745
+        "x": 3.0093610016989087,
+        "y": 4.042221470189976
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "grabStageNote"
     },
     {
       "anchor": {

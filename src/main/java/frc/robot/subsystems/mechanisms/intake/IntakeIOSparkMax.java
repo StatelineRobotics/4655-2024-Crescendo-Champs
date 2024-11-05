@@ -48,6 +48,8 @@ public class IntakeIOSparkMax implements IntakeIO{
         
         wristEncoder.setInverted(true);    
         wristEncoder.setPositionConversionFactor(360);
+        wristEncoder.setZeroOffset(333.3127069);
+        SmartDashboard.putNumber("wristOffsetValue", wristEncoder.getZeroOffset());
     
         m_Wrist.setIdleMode(IdleMode.kBrake);       //MOTORBRAKE
         m_Intake.setIdleMode(IdleMode.kCoast);      //MOTORBRAKE
@@ -85,7 +87,7 @@ public class IntakeIOSparkMax implements IntakeIO{
         m_Wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
         m_Wrist.setSoftLimit(SoftLimitDirection.kForward, 240);
         m_Wrist.setSoftLimit(SoftLimitDirection.kReverse, 5);
-        wristEncoder.setZeroOffset(39.3194385);
+        
 
 
 

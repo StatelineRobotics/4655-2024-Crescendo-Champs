@@ -8,20 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.423996054839469,
-        "y": 8.13903139931815
+        "x": 0.5645260933928763,
+        "y": 7.834549649121672
       },
       "isLocked": false,
       "linkedName": "FarShotStart"
     },
     {
       "anchor": {
-        "x": 5.38939075025083,
-        "y": 6.265297551993107
+        "x": 4.429102153500774,
+        "y": 7.717441283663858
       },
       "prevControl": {
-        "x": 5.541631625345989,
-        "y": 8.361537293687997
+        "x": 3.8249524666072747,
+        "y": 7.7911180747484305
+      },
+      "nextControl": {
+        "x": 4.9092464518778165,
+        "y": 7.65888710093495
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.349679347004912,
+        "y": 6.124767513443729
+      },
+      "prevControl": {
+        "x": 6.314546837371595,
+        "y": 6.803996033092901
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +55,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 3.0,
+    "rotation": 2.935673447217359,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "FarShot",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

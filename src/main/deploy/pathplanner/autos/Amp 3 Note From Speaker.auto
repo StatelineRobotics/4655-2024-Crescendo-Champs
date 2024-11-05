@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.373390793800354,
-      "y": 7.7
+      "x": 1.2,
+      "y": 5.49228881953771
     },
-    "rotation": 2.422797029167743e-25
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "FarShot"
+            "name": "Speaker"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TestPath.1"
+            "pathName": "Start from Speaker S1"
           }
         },
         {
@@ -44,13 +44,31 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TestPath.2"
+            "pathName": "Start from Speaker S2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp3Note Connector"
           }
         },
         {
@@ -72,9 +90,39 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "TestPath.3"
+            "pathName": "From Amp S1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "From Amp S2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -87,5 +135,5 @@
     }
   },
   "folder": null,
-  "choreoAuto": true
+  "choreoAuto": false
 }

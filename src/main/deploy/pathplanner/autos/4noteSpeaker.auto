@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.373390793800354,
-      "y": 7.7
+      "x": 1.2788871226815193,
+      "y": 5.562647359246215
     },
-    "rotation": -7.722587190303126e-26
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,55 @@
         {
           "type": "named",
           "data": {
-            "name": "FarShot"
+            "name": "Speaker"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TestPath.1"
+            "pathName": "speakerStageNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pickup"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Start from Right S1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SpeakerCenterS"
           }
         },
         {
@@ -44,13 +86,25 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TestPath.2"
+            "pathName": "Start from Speaker S2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp3Note Connector"
           }
         },
         {
@@ -72,56 +126,38 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "TestPath.3"
+            "pathName": "From Amp S1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "From Amp S2"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Pickup"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TestPath.4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Home"
           }
         }
       ]
     }
   },
   "folder": null,
-  "choreoAuto": true
+  "choreoAuto": false
 }

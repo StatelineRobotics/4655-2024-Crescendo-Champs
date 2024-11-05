@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.18,
-        "y": 5.49
+        "x": 2.9886692583656194,
+        "y": 4.051949444840401
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.77,
-        "y": 5.49
+        "x": 2.204043209798258,
+        "y": 3.95826275247415
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "grabStageNote"
     },
     {
       "anchor": {
@@ -20,25 +20,19 @@
         "y": 5.49
       },
       "prevControl": {
-        "x": 1.91,
-        "y": 5.49
+        "x": 1.8878506230621577,
+        "y": 5.3635631379679305
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "closeMidShot"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -49,7 +43,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "folder": "custom4note",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

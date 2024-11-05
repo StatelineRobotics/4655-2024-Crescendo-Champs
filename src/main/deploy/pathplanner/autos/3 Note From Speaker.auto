@@ -60,9 +60,15 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Stage3Note Connector"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
@@ -92,19 +98,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start from Speaker S3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Start from Right S2"
+            "pathName": "Start from Right S1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Start from Right S2"
           }
         },
         {
@@ -122,13 +128,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Home"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Start from Right S1"
           }
         }
       ]

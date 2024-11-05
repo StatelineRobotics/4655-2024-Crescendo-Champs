@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.202706133692812,
-        "y": 5.877211982157567
+        "x": 6.361390183550694,
+        "y": 5.972526638348569
       },
       "isLocked": false,
       "linkedName": "Far2ndNote"
     },
     {
       "anchor": {
-        "x": 5.38939075025083,
-        "y": 6.265297551993107
+        "x": 6.349679347004912,
+        "y": 6.124767513443729
       },
       "prevControl": {
-        "x": 6.134853765840539,
-        "y": 6.467768988326115
+        "x": 6.747847789557453,
+        "y": 6.0427916576232565
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "FarShot",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
